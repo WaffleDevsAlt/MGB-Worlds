@@ -15,7 +15,6 @@ jobs:
         node-version: [14.x, 16.x, 18.x]
 
     steps:
-    - name: Checkout
     - uses: actions/checkout@v3
 
     - name: Use Node.js ${{ matrix.node-version }}
@@ -29,7 +28,7 @@ jobs:
         npx webpack
         npx tailwindcss -i ./src/css/main.css -o ./dist/tailwind.css
 
-    - name: Checkout2
+    - name: Checkout
     - uses: actions/checkout@v3
     - name: Setup Pages
       uses: actions/configure-pages@v3
