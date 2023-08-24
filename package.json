@@ -1,0 +1,26 @@
+{
+  "name": "waffledevslandingpage",
+  "version": "1.0.0",
+  "description": "\"# waffledevs.github.io\"",
+  "private": true,
+  "scripts": {
+    "build": "npx webpack && npx tailwindcss -i ./src/css/main.css -o ./dist/tailwind.css",
+    "watch": "npx webpack --watch && npx tailwindcss -i ./src/css/main.css -o ./dist/tailwind.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jquery": "^3.5.16",
+    "html-webpack-plugin": "^5.5.3",
+    "tailwindcss": "^3.3.3",
+    "ts-loader": "^9.4.4",
+    "typescript": "^5.1.6",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "@flaticon/flaticon-uicons": "^2.4.0",
+    "jquery": "^3.7.0"
+  }
+}
