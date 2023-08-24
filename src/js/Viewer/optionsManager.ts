@@ -23,12 +23,12 @@ export function initializeOptions() {
 	let maxSize = 0;
 	for (const option in options) {
 		const { text, btnId, helpText } = options[option];
-
-		maxSize = text.length * 16 > maxSize ? text.length * 16 : maxSize;
+		const globalSize = $(window).width() * 0.01 + 1;
+		maxSize = text.length * globalSize > maxSize ? text.length * globalSize : maxSize;
 		optionStates[option] = false;
 		const element = $(`
         <div class="rounded-full bg-gray-600 p-4 flex items-center relative w-full cursor-pointer select-none min-w-full">
-            <span class="hasHelp text-lg font-bold">${text}</span>
+            <span class="hasHelp text-[1vw] font-bold">${text}</span>
             <div class="hide">${helpText}</div>
             <div class="flex items-center w-max cursor-pointer select-none absolute right-4">
                 <input

@@ -145,13 +145,13 @@ export class ViewManager {
 
 			const element = $(`
             <div class="w-full h-10 bg-gray-400 border-black border-4 flex flex-row gap-2 relative max-w-full">
-			    <span class="hasHelp my-auto text-md font-bold mr-auto m-2 min-w-max">${text}</span>
+			    <span class="hasHelp my-auto text-[.8vw] font-bold mr-auto m-2 min-w-max">${text}</span>
                 <div class="hide">${helpText}</div>
 
 				${inputType == "text" ? `<input id="${id}Input" type="text" class="w-4/12 min-w-[40px] h-full float-right" maxlength="10"/>` : ``}
 				${
 					hasButton
-						? `<button id="${id}Submit" type="submit" class="right-0 float-right z-0 w-8 h-full bg-slate-600 text-white">S</button>`
+						? `<button id="${id}Submit" type="submit" class="right-0 float-right text-[.6vw] z-0 w-8 h-full bg-slate-600 text-white">S</button>`
 						: `
 			<div class="flex items-center w-max cursor-pointer select-none float-right ">
 				<input
@@ -159,8 +159,8 @@ export class ViewManager {
 					type="checkbox"
 					class="mr-2 appearance-none transition-colors cursor-pointer w-14 h-7 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-blue-500 bg-red-500"
 				/>
-				<span class="absolute font-medium text-xs uppercase right-1 mr-2 text-white pointer-events-none"> OFF </span>
-				<span class="absolute font-medium text-xs uppercase right-8 mr-2 text-white pointer-events-none"> ON </span>
+				<span class="absolute font-medium text-[.6vw] uppercase right-1 mr-2 text-white pointer-events-none"> OFF </span>
+				<span class="absolute font-medium text-[.6vw] uppercase right-8 mr-2 text-white pointer-events-none"> ON </span>
 				<span class="w-7 h-7 right-7 absolute rounded-full transform  mr-2 transition-transform bg-gray-200 pointer-events-none" />
 			</div>`
 				}

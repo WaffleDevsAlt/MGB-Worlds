@@ -566,6 +566,10 @@ video {
   right: 2rem;
 }
 
+.top-0 {
+  top: 0px;
+}
+
 .z-0 {
   z-index: 0;
 }
@@ -631,6 +635,30 @@ video {
   height: 100vh;
 }
 
+.h-\[90vh\] {
+  height: 90vh;
+}
+
+.h-\[85vh\] {
+  height: 85vh;
+}
+
+.max-h-full {
+  max-height: 100%;
+}
+
+.max-h-\[90vh\] {
+  max-height: 90vh;
+}
+
+.max-h-\[85vh\] {
+  max-height: 85vh;
+}
+
+.max-h-\[100\%\] {
+  max-height: 100%;
+}
+
 .w-14 {
   width: 3.5rem;
 }
@@ -660,28 +688,17 @@ video {
   width: 100vw;
 }
 
-.w-6 {
-  width: 1.5rem;
+.w-min {
+  width: -moz-min-content;
+  width: min-content;
 }
 
-.w-2\/12 {
-  width: 16.666667%;
+.min-w-\[13vw\] {
+  min-width: 13vw;
 }
 
-.w-3\/12 {
-  width: 25%;
-}
-
-.w-\[30\%\] {
-  width: 30%;
-}
-
-.min-w-\[200px\] {
-  min-width: 200px;
-}
-
-.min-w-\[240px\] {
-  min-width: 240px;
+.min-w-\[16vw\] {
+  min-width: 16vw;
 }
 
 .min-w-\[40px\] {
@@ -692,21 +709,41 @@ video {
   min-width: 100%;
 }
 
-.min-w-\[250px\] {
-  min-width: 250px;
+.min-w-max {
+  min-width: -moz-max-content;
+  min-width: max-content;
 }
 
-.min-w-\[275px\] {
-  min-width: 275px;
+.min-w-\[240px\] {
+  min-width: 240px;
 }
 
 .min-w-\[300px\] {
   min-width: 300px;
 }
 
-.min-w-max {
-  min-width: -moz-max-content;
-  min-width: max-content;
+.min-w-\[18vw\] {
+  min-width: 18vw;
+}
+
+.min-w-\[20vw\] {
+  min-width: 20vw;
+}
+
+.max-w-\[100vw\] {
+  max-width: 100vw;
+}
+
+.max-w-\[13vw\] {
+  max-width: 13vw;
+}
+
+.max-w-\[16vw\] {
+  max-width: 16vw;
+}
+
+.max-w-full {
+  max-width: 100%;
 }
 
 .max-w-\[240px\] {
@@ -717,8 +754,24 @@ video {
   max-width: 350px;
 }
 
-.max-w-full {
-  max-width: 100%;
+.max-w-\[18vw\] {
+  max-width: 18vw;
+}
+
+.max-w-\[20vw\] {
+  max-width: 20vw;
+}
+
+.max-w-\[66vw\] {
+  max-width: 66vw;
+}
+
+.max-w-\[75vw\] {
+  max-width: 75vw;
+}
+
+.max-w-\[76vw\] {
+  max-width: 76vw;
 }
 
 .transform {
@@ -733,6 +786,10 @@ video {
   -webkit-user-select: none;
      -moz-user-select: none;
           user-select: none;
+}
+
+.resize-none {
+  resize: none;
 }
 
 .appearance-none {
@@ -779,6 +836,10 @@ video {
 
 .place-self-end {
   place-self: end;
+}
+
+.overflow-hidden {
+  overflow: hidden;
 }
 
 .rounded-full {
@@ -882,14 +943,34 @@ video {
   text-align: right;
 }
 
-.text-lg {
-  font-size: 1.125rem;
-  line-height: 1.75rem;
+.text-\[0\.01vw\] {
+  font-size: 0.01vw;
 }
 
 .text-xs {
   font-size: 0.75rem;
   line-height: 1rem;
+}
+
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
+.text-\[0\.1vw\] {
+  font-size: 0.1vw;
+}
+
+.text-\[1vw\] {
+  font-size: 1vw;
+}
+
+.text-\[\.8vw\] {
+  font-size: .8vw;
+}
+
+.text-\[\.6vw\] {
+  font-size: .6vw;
 }
 
 .font-bold {

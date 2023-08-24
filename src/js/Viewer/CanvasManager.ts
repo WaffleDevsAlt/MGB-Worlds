@@ -81,7 +81,6 @@ export class CanvasManager {
 			}
 			this.updateCanvas();
 		});
-
 		setInterval(() => {
 			this.resizeCanvas();
 			this.updateCanvas();
@@ -92,6 +91,7 @@ export class CanvasManager {
 	resizeCanvas() {
 		//$(this.canvas.parentElement).css("width", "100%");
 		//$(this.canvas.parentElement).css("height", "100%");
+
 		$(this.canvas).css("width", "100%");
 		$(this.canvas).css("height", "100%");
 		const min = Math.round(Math.min($(this.canvas).width(), $(this.canvas).height()));
@@ -280,9 +280,9 @@ export class CanvasManager {
 	initializeStats() {
 		for (let i = 0; i < this.stats.length; i++) {
 			$(`#stats`).append(`
-			<div class="statDiv" id="stat${this.stats[i]}Div">
-				<p id="stat${this.stats[i]}Label" class="text-left">${this.stats[i]}:</p>
-				<p id="stat${this.stats[i]}Detail" class="text-right">Detial</p>
+			<div class="statDiv" id="stat${this.stats[i]}Div text-[.8vw]">
+				<p id="stat${this.stats[i]}Label" class="text-[.8vw] text-left">${this.stats[i]}:</p>
+				<p id="stat${this.stats[i]}Detail" class="text-[.8vw] text-right">Detial</p>
 			</div>
 			`);
 		}
