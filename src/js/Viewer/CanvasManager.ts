@@ -89,7 +89,7 @@ export class CanvasManager {
 		this.updateCanvas();
 	}
 	resizeCanvas() {
-		//$(this.canvas.parentElement).css("width", "100%");
+		///$(this.canvas.parentElement).css("width", "100%");
 		//$(this.canvas.parentElement).css("height", "100%");
 
 		$(this.canvas).css("width", "100%");

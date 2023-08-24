@@ -23,7 +23,7 @@ export function initializeOptions() {
 	let maxSize = 0;
 	for (const option in options) {
 		const { text, btnId, helpText } = options[option];
-		const globalSize = $(window).width() * 0.01 + 1;
+		const globalSize = $(window).width() * 0.0085 + 1;
 		maxSize = text.length * globalSize > maxSize ? text.length * globalSize : maxSize;
 		optionStates[option] = false;
 		const element = $(`

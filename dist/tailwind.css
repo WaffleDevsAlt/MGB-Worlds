@@ -594,6 +594,10 @@ video {
   margin: auto;
 }
 
+.m-0 {
+  margin: 0px;
+}
+
 .my-auto {
   margin-top: auto;
   margin-bottom: auto;
@@ -609,6 +613,10 @@ video {
 
 .mt-8 {
   margin-top: 2rem;
+}
+
+.mr-0 {
+  margin-right: 0px;
 }
 
 .flex {
@@ -730,6 +738,18 @@ video {
   min-width: 20vw;
 }
 
+.min-w-\[14vw\] {
+  min-width: 14vw;
+}
+
+.min-w-\[28vw\] {
+  min-width: 28vw;
+}
+
+.min-w-\[18w\] {
+  min-width: 18w;
+}
+
 .max-w-\[100vw\] {
   max-width: 100vw;
 }
@@ -772,6 +792,14 @@ video {
 
 .max-w-\[76vw\] {
   max-width: 76vw;
+}
+
+.max-w-\[14vw\] {
+  max-width: 14vw;
+}
+
+.max-w-\[80vw\] {
+  max-width: 80vw;
 }
 
 .transform {
