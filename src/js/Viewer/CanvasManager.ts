@@ -48,21 +48,24 @@ export class CanvasManager {
 			this.updateCanvas();
 		});
 		$(window).on("keypress", (event) => {
-			if ($(":focus-within").length != 0) return;
 			switch (event.code) {
 				case "KeyW":
+				case "ArrowUp":
 					if (event.shiftKey) this.y += 4;
 					this.y++;
 					break;
 				case "KeyA":
+				case "ArrowLeft":
 					if (event.shiftKey) this.x -= 4;
 					this.x--;
 					break;
 				case "KeyD":
+				case "ArrowRight":
 					if (event.shiftKey) this.x += 4;
 					this.x++;
 					break;
 				case "KeyS":
+				case "ArrowDown":
 					if (event.shiftKey) this.y -= 4;
 					this.y--;
 					break;
@@ -107,15 +110,7 @@ export class CanvasManager {
 	}
 	updateCanvas() {
 		this.ctx.clearRect(0, 0, this.width, this.height);
-		this.ctx.strokeStyle = "rgb(10, 160, 180)";
-		this.ctx.beginPath();
-		this.ctx.moveTo(0, this.height / 2);
-		this.ctx.lineTo(this.width, this.height / 2);
-
-		this.ctx.moveTo(this.width / 2, 0);
-		this.ctx.lineTo(this.width / 2, this.height);
-		this.ctx.closePath();
-		this.ctx.stroke();
+		this.drawStaticCanvasElement();
 		const filteredWorlds = ViewMgr.shouldFilterWorlds();
 		const filteredConnections = ViewMgr.shouldFilterConnections();
 		this.generateConnections(filteredConnections);
@@ -135,6 +130,92 @@ export class CanvasManager {
 			}
 		}
 		this.updateStats();
+	}
+
+	drawStaticCanvasElement() {
+		const step = this.width / (this.xView * 2 + 1);
+		const ystep = this.height / (this.yView * 2 + 1);
+		this.ctx.lineWidth = 6;
+		// Minor (10) X/Y Guidelines
+		this.ctx.strokeStyle = "rgba(0,0,0,.2)";
+		for (let x = this.x - this.xView; x <= this.x + this.xView; x++) {
+			if (x % 10 == 0) {
+				const xPos = this.getPosForCoord(x, this.y + this.yView, true)[0];
+				this.ctx.beginPath();
+
+				this.ctx.moveTo(xPos + step / 2, 0);
+				this.ctx.lineTo(xPos + step / 2, this.height);
+				this.ctx.stroke();
+			}
+		}
+		for (let y = this.y - this.yView; y <= this.y + this.yView; y++) {
+			if (y % 10 == 0) {
+				this.ctx.strokeStyle = "rgba(0,0,0,.2)";
+				const yPos = this.getPosForCoord(this.x - this.xView, y, true)[1];
+				this.ctx.beginPath();
+
+				this.ctx.moveTo(0, yPos + ystep / 2);
+				this.ctx.lineTo(this.width, yPos + ystep / 2);
+				this.ctx.stroke();
+			}
+		}
+		// EndMinor (10) X/Y Guidelines
+
+		this.ctx.lineWidth = 3;
+		// X/Y Guidelines
+		this.ctx.strokeStyle = "rgb(10, 100, 140)";
+		this.ctx.beginPath();
+		this.ctx.moveTo(0, this.height / 2);
+		this.ctx.lineTo(this.width, this.height / 2);
+
+		this.ctx.moveTo(this.width / 2, 0);
+		this.ctx.lineTo(this.width / 2, this.height);
+		this.ctx.stroke();
+		// End X/Y GuideLines
+
+		// Tier Circle
+		let minTier = Number.MAX_VALUE;
+		let maxTier = 0;
+		const tierArray = [
+			WorldGenerator.WorldTier(this.x + this.xView, this.y + this.yView),
+			WorldGenerator.WorldTier(this.x - this.xView, this.y + this.yView),
+			WorldGenerator.WorldTier(this.x + this.xView, this.y - this.yView),
+			WorldGenerator.WorldTier(this.x - this.xView, this.y - this.yView),
+		];
+		tierArray.forEach((a) => {
+			if (a > maxTier) maxTier = a;
+			if (a < minTier) minTier = a;
+			return 0;
+		});
+		console.log(Math.floor(maxTier / 100) * 100);
+		switch (Math.floor(maxTier / 100) * 100) {
+			case 700:
+				this.ctx.strokeStyle = `rgb(255, 200, 0,.5)`;
+				break;
+			case 1000:
+				this.ctx.strokeStyle = `rgb(0, 200, 0,.5)`;
+				break;
+			case 1300:
+				this.ctx.strokeStyle = `rgb(50, 50, 50,.5)`;
+				break;
+			default:
+				this.ctx.strokeStyle = "rgb(10, 160, 180,.5)";
+				break;
+		}
+		const shouldShowCircle = maxTier % 100 < minTier % 100;
+		if (shouldShowCircle) {
+			const pos = this.getPosForCoord(0, 0, false);
+			const step = this.width / (this.xView * 2 + 1);
+			const radius = step * Math.floor(maxTier / 100) * 100;
+
+			this.ctx.lineWidth = 20;
+			this.ctx.beginPath();
+			this.ctx.arc(pos[0], pos[1], radius, 0, 2 * Math.PI);
+			this.ctx.stroke();
+			this.ctx.lineWidth = 2;
+		}
+		this.ctx.lineWidth = 2;
+		// End Tier Circle
 	}
 
 	createWorld(x: number, y: number, stats: WorldStats, filtered: boolean, returnValue: boolean = false, runFilter: boolean = true) {
@@ -191,7 +272,7 @@ export class CanvasManager {
 			this.ctx.fillRect(coords[0] + step / ysSize, coords[1] + step / ysSize, step - step / (ysSize / 2), step - step / (ysSize / 2));
 		}
 		this.ctx.fillStyle = `rgba(0, 0, 0, ${alpha})`;
-		this.ctx.fillText(`${this.worldsCache[x][y].tier}`, coords[0] + step / 2, coords[1] + step / 2, step * 2);
+		if (!optionStates.disableTierNumbers) this.ctx.fillText(`${this.worldsCache[x][y].tier}`, coords[0] + step / 2, coords[1] + step / 2, step * 2);
 	}
 
 	generateConnections(filtered: boolean) {
@@ -220,6 +301,7 @@ export class CanvasManager {
 	}
 
 	drawConnection(x: number, y: number, x2: number, y2: number, filtered: boolean, runFilter: boolean = true) {
+		this.ctx.lineWidth = 5;
 		let alpha = 1;
 		if (filtered) alpha = 0.05;
 		if (filtered && runFilter) ViewMgr.drawFilteredConnections(x, y, x2, y2);
@@ -295,6 +377,7 @@ export class CanvasManager {
 	}
 	updateStats() {
 		if (!this.areStatsInitialized) this.initializeStats();
+		if (this.worldsCache[this.x] == undefined || this.worldsCache[this.x][this.y] == undefined) return;
 		const stats: WorldStats = this.worldsCache[this.x][this.y];
 		if (!WorldGenerator.DoesWorldExist(this.x, this.y)) return;
 		for (let stat in stats) {

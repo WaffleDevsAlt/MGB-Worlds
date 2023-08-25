@@ -89,7 +89,7 @@ export class WorldGeneration {
 		if (num > 21) {
 			return 21;
 		}
-		return num;
+		return Math.floor(num);
 	}
 
 	WorldSizeY(x: number, y: number) {
@@ -97,7 +97,7 @@ export class WorldGeneration {
 		if (num > 41) {
 			return 41;
 		}
-		return num;
+		return Math.floor(num);
 	}
 
 	WorldTier(x: number, y: number) {

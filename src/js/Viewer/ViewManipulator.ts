@@ -217,7 +217,7 @@ export class ViewManager {
 			const { text, id, helpText, inputType, func } = filters[filter];
 			if (id.endsWith("ConnectionFilter") && $(`#${id}Submit`).prop("checked")) {
 				if (!func(x, y, x2, y2)) {
-					if (!optionStates.hideFilteredWorlds) CanvasMgr.drawConnection(x, y, x2, y2, true, false);
+					CanvasMgr.drawConnection(x, y, x2, y2, true, false);
 					return;
 				}
 			}

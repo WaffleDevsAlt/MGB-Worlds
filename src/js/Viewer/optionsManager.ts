@@ -13,6 +13,11 @@ const options: {
 		btnId: "dynamicYsSize",
 		helpText: "Changes the YS Square size depending on amount. Full = 10% of tier. Small Square = 1;",
 	},
+	disableTierNumbers: {
+		text: "Disable Tier Numbers",
+		btnId: "disableTierNumbers",
+		helpText: "No Tier Numbers",
+	},
 };
 
 export const optionStates: {
