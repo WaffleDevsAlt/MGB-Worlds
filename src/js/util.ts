@@ -27,7 +27,6 @@ export function HealthToColor(health: number, alpha: number = 1) {
 export function Pallet(t: number, a: Vector3, b: Vector3, c: Vector3, d: Vector3, alpha: number = 1) {
 	let vector: Vector3 = multVectorByInt(addVectors(multVectorByInt(c, t), d), 6.28318);
 	vector = addVectors(a, new Vector3(b.x * Math.cos(vector.x), b.y * Math.cos(vector.y), b.z * Math.cos(vector.z)));
-	console.log(`rgba(${vector.x},${vector.y},${vector.z},${alpha})`);
 	return `rgba(${255 * vector.x},${255 * vector.y},${255 * vector.z},${alpha})`;
 }
 

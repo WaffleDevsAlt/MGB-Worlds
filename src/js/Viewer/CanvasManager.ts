@@ -1,5 +1,5 @@
 import { ViewMgr, WorldGenerator } from "../../..";
-import { WorldStats } from "../WorldGeneration";
+import { BlockStats, WorldStats } from "../WorldGeneration";
 import { initializeOptions, optionStates } from "./optionsManager";
 import { CustomMath, Random } from "../CustomMath";
 import { HealthToColor } from "../util";
@@ -106,8 +106,8 @@ export class CanvasManager {
 	}
 
 	resizeCanvas() {
-		///$(this.canvas.parentElement).css("width", "100%");
-		//$(this.canvas.parentElement).css("height", "100%");
+		$(this.canvas.parentElement).css("width", "100%");
+		$(this.canvas.parentElement).css("height", "100%");
 
 		$(this.canvas).css("width", "100%");
 		$(this.canvas).css("height", "100%");
@@ -194,21 +194,63 @@ export class CanvasManager {
 		this.wHeight = this.wBlocks[0].length;
 		this.wWidth = this.wBlocks.length;
 		this.wOffset = (this.wHeight - this.wWidth) / 2;
-
+		const worldStats = this.worldsCache[this.temp.x][this.temp.y].stats;
 		for (let x = 0; x < this.wWidth; x++) {
 			for (let y = 0; y < this.wHeight; y++) {
-				this.drawBlock(x + this.wOffset, y, this.wBlocks[x][y]);
+				this.drawBlock(x, this.wHeight - y - 1, this.wBlocks[x][y], worldStats);
 			}
 		}
 	}
-	drawBlock(x: number, y: number, num: number) {
+	drawBlock(x: number, y: number, num: number, worldStats: WorldStats) {
 		if (!num) return;
+		const stats = this.getBlockStats(x, y);
 		const step = this.height / this.wHeight;
+		const offset = step / 24;
+		const indent = offset + step / 12;
 
-		const coords = this.getPosForCoordForBlock(x, y, true);
+		const coords = this.getPosForCoordForBlock(x + this.wOffset, y, true);
 		this.ctx.fillStyle = HealthToColor(num, 1);
-		console.log(this.ctx.fillStyle);
-		this.ctx.fillRect(coords[0] + step / 12, coords[1] + step / 12, step - step / 6, step - step / 6);
+		this.ctx.fillRect(coords[0] + offset, coords[1] + offset, step - offset, step - offset);
+		if (stats.armorRating && worldStats.armorPerc) {
+			this.ctx.fillStyle = "rgb(0,255,255)"; // TODO, DO CUSTOM ARMOR COLORS??????????/
+			this.ctx.beginPath();
+			this.ctx.moveTo(coords[0] + offset, coords[1] + offset);
+			this.ctx.lineTo(coords[0] + step - offset, coords[1] + step - offset);
+			this.ctx.lineTo(coords[0] + offset, coords[1] + step - offset);
+			this.ctx.fill();
+			this.ctx.closePath();
+		}
+		if (stats.shieldRegen && worldStats.shieldPerc) {
+			this.ctx.fillStyle = "rgb(0,0,0	)"; // TODO, DO CUSTOM SHIELD COLORS??????????/
+			this.ctx.beginPath();
+
+			this.ctx.moveTo(coords[0] + offset, coords[1] + offset);
+			this.ctx.lineTo(coords[0] + step - offset, coords[1] + offset);
+			this.ctx.lineTo(coords[0] + step - offset, coords[1] + step - offset);
+			this.ctx.lineTo(coords[0] + offset, coords[1] + step - offset);
+			this.ctx.lineTo(coords[0] + offset, coords[1] + offset);
+
+			this.ctx.moveTo(coords[0] + indent, coords[1] + indent); //TL
+			this.ctx.lineTo(coords[0] + step - indent, coords[1] + indent); //TR
+			this.ctx.lineTo(coords[0] + step - indent, coords[1] + step - indent); //BR
+			this.ctx.lineTo(coords[0] + indent, coords[1] + step - indent); //BL
+			this.ctx.lineTo(coords[0] + indent, coords[1] + indent); //TL
+
+			this.ctx.fill("evenodd");
+			this.ctx.closePath();
+		}
+		if (stats.mutation != "" && worldStats.mutationPerc) {
+			this.ctx.fillStyle = "rgb(0,0,0	)"; // TODO, DO CUSTOM SHIELD COLORS??????????/
+			const gradient = this.ctx.createRadialGradient(coords[0] + step / 2, coords[1] + step / 2, step / 16, coords[0] + step / 2, coords[1] + step / 2, step / 2);
+
+			// Add three color stops
+			gradient.addColorStop(0, "black");
+			gradient.addColorStop(1, "rgba(0,0,0,0");
+
+			// Set the fill style and draw a rectangle
+			this.ctx.fillStyle = gradient;
+			this.ctx.fillRect(coords[0] + indent, coords[1] + indent, step - indent, step - indent);
+		}
 	}
 	getPosForCoordForBlock(x: number, y: number, needsInView: boolean) {
 		if (!this.isCoordInView(x, y) && needsInView) return;
@@ -225,7 +267,6 @@ export class CanvasManager {
 		const xPx = Math.floor(x / step - this.wOffset);
 		const yPx = Math.floor(y / step);
 		if (xPx > this.wWidth - 1 || xPx < 0) return;
-		console.log([xPx, yPx]);
 		return [xPx, yPx];
 	}
 	areBStatsInitialized: boolean = false;
@@ -243,7 +284,7 @@ export class CanvasManager {
 	}
 	updateBlockStats(x: number, y: number) {
 		if (!this.areBStatsInitialized) this.initializeBStats();
-		const stats: WorldStats = this.getBlockStats(x, y);
+		const stats: BlockStats = this.getBlockStats(x, y);
 		for (let stat in stats) {
 			if (typeof stats[stat] == "number") {
 				stats[stat] = Math.round((Number.parseFloat(stats[stat]) + Number.EPSILON) * 10000) / 10000;
@@ -252,8 +293,14 @@ export class CanvasManager {
 			$(`#bstat${stat.charAt(0).toUpperCase() + stat.slice(1)}Detail`).text(stats[stat]);
 		}
 	}
-
-	getBlockStats(x: number, y: number): any {
+	blockStatsCache: {
+		[key: number]: {
+			[key: number]: BlockStats;
+		};
+	} = {};
+	getBlockStats(x: number, y: number): BlockStats {
+		if (!this.blockStatsCache[x]) this.blockStatsCache[x] = {};
+		if (this.blockStatsCache[x][y]) return this.blockStatsCache[x][y];
 		const {
 			armorPerc,
 			armorRating,
@@ -309,7 +356,7 @@ export class CanvasManager {
 				bmutationLevel = mutationLevel;
 			}
 		}
-		const returnVal = {
+		this.blockStatsCache[x][y] = {
 			armor: armor,
 			armorRating: barmorRating,
 			shield: shield,
@@ -318,7 +365,7 @@ export class CanvasManager {
 			mutation: mutation,
 			mutationLevel: bmutationLevel,
 		};
-		return returnVal;
+		return this.blockStatsCache[x][y];
 	}
 
 	drawStaticCanvasElement() {
@@ -387,7 +434,7 @@ export class CanvasManager {
 				this.ctx.strokeStyle = `rgb(50, 50, 50,.5)`;
 				break;
 			default:
-				this.ctx.strokeStyle = "rgb(10, 160, 180,.5)";
+				this.ctx.strokeStyle = "rgb(10, 160, 120,.5)";
 				break;
 		}
 		const shouldShowCircle = maxTier % 100 < minTier % 100;
@@ -411,7 +458,11 @@ export class CanvasManager {
 
 		let alpha = 1;
 
-		if (filtered) alpha = 0.05;
+		if (filtered) {
+			if (optionStates.hideFilteredWorlds && !returnValue) return;
+			alpha = 0.05;
+		}
+
 		let fillStyle = `rgba(200,0,0,${alpha})`;
 		if (this.x == x && this.y == y) fillStyle = `rgba(0, 50, 200, ${alpha})`;
 
@@ -510,8 +561,11 @@ export class CanvasManager {
 	drawConnection(x: number, y: number, x2: number, y2: number, filtered: boolean, runFilter: boolean = true) {
 		this.ctx.lineWidth = 5;
 		let alpha = 1;
-		if (filtered) alpha = 0.05;
-		if (filtered && runFilter) ViewMgr.drawFilteredConnections(x, y, x2, y2);
+		if (filtered) {
+			if (optionStates.hideFilteredConnections) return;
+			alpha = 0.05;
+			if (runFilter) ViewMgr.drawFilteredConnections(x, y, x2, y2);
+		}
 
 		this.ctx.strokeStyle = `rgba(0, 0, 0,${alpha})`;
 		const [xP, yP] = this.getPosForCoord(x, y, false);

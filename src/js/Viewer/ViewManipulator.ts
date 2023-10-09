@@ -212,7 +212,7 @@ export class ViewManager {
 			const { text, id, helpText, inputType, func } = filters[filter];
 			if (id.endsWith("WorldFilter") && $(`#${id}Submit`).prop("checked")) {
 				if (!func(x, y, stats, filters[filter])) {
-					if (!optionStates.hideFilteredWorlds) CanvasMgr.createWorld(x, y, stats, true, false, false);
+					CanvasMgr.createWorld(x, y, stats, true, false, false);
 					return;
 				}
 			}

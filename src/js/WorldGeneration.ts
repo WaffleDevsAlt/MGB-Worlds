@@ -24,6 +24,16 @@ export type WorldStats = {
 	tier: number;
 	value: number;
 };
+export type BlockStats = {
+	[key: string]: any;
+	armor: number;
+	armorRating: number;
+	shield: number;
+	shieldRegen: number;
+	health: number;
+	mutation: string;
+	mutationLevel: number;
+};
 
 export class WorldGeneration {
 	generationSize = 200;
@@ -121,7 +131,6 @@ export class WorldGeneration {
 			num4 *= 1.4;
 			num5++;
 		}
-		console.log(num5);
 		return (num4 * (1.0 - (num % 50) / 50.0) + num4 * 1.4 * ((num % 50) / 50.0)) * num3;
 	}
 

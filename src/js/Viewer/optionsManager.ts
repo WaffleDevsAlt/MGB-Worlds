@@ -8,6 +8,11 @@ const options: {
 		btnId: "hideFilteredWorlds",
 		helpText: "Disables rendering of any worlds that don't fit the filters.",
 	},
+	hideFilteredConnections: {
+		text: "Hide Filtered Connections",
+		btnId: "hideFilteredConnections",
+		helpText: "Disables rendering of any Connections that don't fit the filters.",
+	},
 	dynamicYsSize: {
 		text: "Dynamic yS Size",
 		btnId: "dynamicYsSize",
