@@ -31,6 +31,19 @@ const filters: {
 			CanvasMgr.y = Number.parseInt(y);
 		},
 	},
+	viewWorld: {
+		text: "View World:",
+		id: "viewWorld",
+		helpText: "Toggles the world viewer",
+		inputType: "none",
+		hasButton: true,
+		func: (x: number, y: number, x2: number, y2: number) => {
+			console.log("asas	");
+			CanvasMgr.toggleDrawingWorld();
+			console.log(CanvasMgr.drawingWorld);
+			$("#viewWorldSubmit").text(`${CanvasMgr.drawingWorld ? "Disable" : "Enable"}`);
+		},
+	},
 	hasHPLess: {
 		text: "Has HP < X%",
 		id: "hasHPLesserWorldFilter",
@@ -43,7 +56,6 @@ const filters: {
 			const input = CustomMath.Clamp(Number.parseInt($(`#${settings.id}Input`).val().toString()), 1, 100);
 
 			const percentage = (stats.maxLife - minHp) / (maxHp - minHp);
-			console.log(percentage);
 			if (!(percentage * 100 <= input)) return false;
 			const hasYs = stats.yS != 0;
 			return true;
@@ -80,7 +92,6 @@ const filters: {
 		inputType: "none",
 		hasButton: false,
 		func: (x: number, y: number, stats: WorldStats, settings: filter) => {
-			if (x == -1 && y == 308) console.log(stats.armorPerc);
 			if (stats.armorPerc == 0) {
 				return true;
 			}

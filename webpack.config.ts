@@ -13,6 +13,10 @@ module.exports = {
 				use: "ts-loader",
 				exclude: /node_modules/,
 			},
+			{
+				test: /\.(png|svg|jpg|jpeg|gif)$/i,
+				type: "asset/resource",
+			},
 		],
 	},
 	resolve: {
@@ -26,6 +30,11 @@ module.exports = {
 	output: {
 		filename: "[name].bundle.js",
 		path: path.resolve(__dirname, "dist"),
+		clean: true,
 	},
 	watch: true,
+	externals: {
+		jquery: "jQuery",
+	},
+	mode: "development",
 };

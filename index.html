@@ -26,12 +26,16 @@
 						id="stats"
 						class="bg-gray-500 flex flex-col relative float-right p-4 gap-1 border-l-4 border-black w-full h-full max-w-[14vw] min-w-[14vw] place-self-end text-left"
 					></div>
+					<div
+						id="bstats"
+						class="hidden bg-gray-500 flex-col relative float-right p-4 gap-1 border-l-4 border-black w-full h-full max-w-[14vw] min-w-[14vw] place-self-end text-left"
+					></div>
 				</div>
 			</div>
 		</div>
 		<script>
 			// Early Development only. When I do get a web server running in /dist/, this will be useless
-			//if (window.location.pathname != "/dist/") window.location.pathname = "/dist/";
+			if (window.location.pathname != "/dist/" && window.location.host == "127.0.0.1:5500") window.location.pathname = "/dist/";
 		</script>
 	</body>
 </html>

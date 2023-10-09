@@ -2,6 +2,7 @@ import rand from "./rand.json";
 import { GlobalConstants } from "./GlobalConstants";
 import { CustomMath, Random } from "./CustomMath";
 import { CanvasMgr } from "../..";
+import { UnityRandom } from "./World/Xor128";
 const { worldHP, factionSpawnTierTemple, factionSpawnTierCrystal, factionSpawnTierVoid } = GlobalConstants;
 export type WorldStats = {
 	[key: string]: any;
@@ -149,37 +150,39 @@ export class WorldGeneration {
 		return 3 + num + (Math.pow(num, 3) - Math.pow(num, p)) * (8 - (this.WorldValue(x, y) - 60) * 0.1 + (num - 300) / 40);
 	}
 
-	// This is for generating the actual blocks I THINK. Reqs 1-to-1 UnityEngine.random.value remake in js
+	// Basically the normal games function. Off by around 10k at max with a tier1000 world.
+	GenerateWorld(x: number, y: number) {
+		const rand = new UnityRandom(x * 1000 + y);
 
-	// GenerateWorld(x: number, y: number) {
-	// 	const num = this.WorldSizeX(x, y);
-	// 	const num2 = this.WorldSizeY(x, y);
-	// 	const num3 = this.WorldMaxLife(x, y);
-	//     const array = [this.WorldSizeX(x, y), this.WorldSizeY(x, y)];
-	//     UnityEngine.Random.InitState(x * 1000 + y);
-	//     for (i = 0; i < this.WorldSizeX(x, y); i++)
-	//     {
-	//         for (j = 0; j < this.WorldSizeY(x, y); j++)
-	//         {
-	//             array[i, j] = UnityEngine.Random.value * num3;
-	//         }
-	//     }
-	//     for (k = 0; k < this.WorldSizeX(x, y); k++)
-	//     {
-	//         for (l = 0; l < this.WorldSizeY(x, y); l++)
-	//         {
-	//             array[k, l] = (array[k, l] + array[k % num, (l + 1) % num2]) / 2.0;
-	//             array[k, l] = (array[k, l] + array[(k + 1) % num, l % num2]) / 2.0;
-	//             array[k, l] = (array[k, l] + array[(k + 1) % num, (l + 1) % num2]) / 2.0;
-	//             array[k, l] = (array[k, l] + array[k % num, (l + 2) % num2]) / 2.0;
-	//             array[k, l] = (array[k, l] + array[(k + 2) % num, l % num2]) / 2.0;
-	//             if (array[k, l] < num3 / 3.0) {
-	//                 array[k, l] = 0.0;
-	//             }
-	//         }
-	//     }
-	//     return array;
-	// }
+		let num = this.WorldSizeX(x, y);
+		let num2 = this.WorldSizeY(x, y);
+		let num3 = this.WorldMaxLife(x, y);
+
+		const array: number[][] = [];
+
+		for (let i = 0; i < num; i++) {
+			for (let j = 0; j < num2; j++) {
+				let randval = rand.value;
+				if (!array[i]) array[i] = [];
+				array[i].push(Math.fround(randval) * num3);
+			}
+		}
+
+		for (let k = 0; k < num; k++) {
+			for (let l = 0; l < num2; l++) {
+				array[k][l] = (array[k][l] + array[k % num][(l + 1) % num2]) / 2.0;
+				array[k][l] = (array[k][l] + array[(k + 1) % num][l % num2]) / 2.0;
+				array[k][l] = (array[k][l] + array[(k + 1) % num][(l + 1) % num2]) / 2.0;
+				array[k][l] = (array[k][l] + array[k % num][(l + 2) % num2]) / 2.0;
+				array[k][l] = (array[k][l] + array[(k + 2) % num][l % num2]) / 2.0;
+				if (array[k][l] < num3 / 3.0) {
+					array[k][l] = 0.0;
+				}
+			}
+		}
+
+		return array;
+	}
 
 	//Not in this class. In GameLogic class but fits here :v
 	ComputeMapStats(x: number, y: number): WorldStats {
