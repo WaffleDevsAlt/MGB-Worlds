@@ -377,25 +377,35 @@ export class CanvasManager {
 		const ystep = this.height / (this.yView * 2 + 1);
 		this.ctx.lineWidth = 6;
 		// Minor (10) X/Y Guidelines
-		this.ctx.strokeStyle = "rgba(0,0,0,.2)";
 		for (let x = this.x - this.xView; x <= this.x + this.xView; x++) {
 			if (x % 10 == 0) {
+				this.ctx.lineWidth = 6;
+				this.ctx.strokeStyle = "rgba(0,0,0,.2)";
 				const xPos = this.getPosForCoord(x, this.y + this.yView, true)[0];
 				this.ctx.beginPath();
 
 				this.ctx.moveTo(xPos + step / 2, 0);
 				this.ctx.lineTo(xPos + step / 2, this.height);
+				if (Math.abs(x) == 8000) {
+					this.ctx.lineWidth = 20;
+					this.ctx.strokeStyle = "rgba(0,0,0,1)";
+				}
 				this.ctx.stroke();
 			}
 		}
 		for (let y = this.y - this.yView; y <= this.y + this.yView; y++) {
 			if (y % 10 == 0) {
+				this.ctx.lineWidth = 6;
 				this.ctx.strokeStyle = "rgba(0,0,0,.2)";
 				const yPos = this.getPosForCoord(this.x - this.xView, y, true)[1];
 				this.ctx.beginPath();
 
 				this.ctx.moveTo(0, yPos + ystep / 2);
 				this.ctx.lineTo(this.width, yPos + ystep / 2);
+				if (Math.abs(y) == 8000) {
+					this.ctx.lineWidth = 20;
+					this.ctx.strokeStyle = "rgba(0,0,0,1)";
+				}
 				this.ctx.stroke();
 			}
 		}
@@ -463,7 +473,6 @@ export class CanvasManager {
 		let alpha = 1;
 
 		if (filtered) {
-			if (optionStates.hideFilteredWorlds && !returnValue) return;
 			alpha = 0.05;
 		}
 
@@ -489,7 +498,7 @@ export class CanvasManager {
 			ysSize = 2 * percentage + 2;
 		}
 		if (filtered && runFilter) ViewMgr.drawFilteredWorlds(x, y, stats);
-		else if (!returnValue) this.drawWorld(x, y, hasYs, alpha, fillStyle, undefined, undefined, ysSize);
+		else if (!returnValue && !optionStates.hideFilteredWorlds) this.drawWorld(x, y, hasYs, alpha, fillStyle, undefined, undefined, ysSize);
 		else return [fillStyle, fillStyle.replace(`0.3)`, `1)`)];
 	}
 
@@ -515,7 +524,7 @@ export class CanvasManager {
 			this.ctx.fillRect(coords[0] + step / ysSize, coords[1] + step / ysSize, step - step / (ysSize / 2), step - step / (ysSize / 2));
 		}
 		this.ctx.fillStyle = `rgba(0, 0, 0, ${alpha})`;
-		if (!optionStates.disableTierNumbers) this.ctx.fillText(`${this.worldsCache[x][y].stats.tier}`, coords[0] + step / 2, coords[1] + step / 2, step * 2);
+		if (!optionStates.disableTierNumbers) this.ctx.fillText(`${Math.floor(this.worldsCache[x][y].stats.tier)}`, coords[0] + step / 2, coords[1] + step / 2, step * 2);
 	}
 
 	generateConnections(filtered: boolean) {
@@ -620,6 +629,7 @@ export class CanvasManager {
 
 		this.areStatsInitialized = true;
 	}
+
 	updateStats() {
 		if (!this.areStatsInitialized) this.initializeStats();
 		if (this.worldsCache[this.x] == undefined || this.worldsCache[this.x][this.y] == undefined) return;

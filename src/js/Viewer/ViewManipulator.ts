@@ -1,6 +1,7 @@
-import { CanvasMgr, ViewMgr, WorldGenerator } from "../../..";
+import { CanvasMgr, ViewMgr, WorldGenerator, debugMode } from "../../..";
 import { CustomMath } from "../CustomMath";
 import { WorldStats } from "../WorldGeneration";
+import { optionStates } from "./optionsManager";
 type filter = {
 	text: string;
 	id: string;
@@ -148,6 +149,31 @@ const filters: {
 
 export class ViewManager {
 	initializeManipulators() {
+		if (debugMode) {
+			filters.hasNoMutation = {
+				text: "Has no mut:",
+				id: "hasNoMutationWorldFilter",
+				helpText: "",
+				inputType: "check",
+				hasButton: false,
+				func: (x: number, y: number, stats: WorldStats, settings: filter) => {
+					if (stats.mutationPerc == 0) {
+						return true;
+					}
+					return false;
+				},
+			};
+			filters.tierGreater = {
+				text: "Has Tier =< X",
+				id: "tierGreaterWorldFilter",
+				helpText: "",
+				inputType: "text",
+				hasButton: false,
+				func: (x: number, y: number, stats: WorldStats, settings: filter) => {
+					return stats.tier >= Number.parseInt($(`#${settings.id}Input`).val().toString());
+				},
+			};
+		}
 		let maxSize = 0;
 		for (const filter in filters) {
 			const { text, id, helpText, inputType, func, hasButton } = filters[filter];
