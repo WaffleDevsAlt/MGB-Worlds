@@ -2,7 +2,7 @@ import { ViewMgr, WorldGenerator } from "../../..";
 import { BlockStats, WorldStats } from "../WorldGeneration";
 import { initializeOptions, optionStates } from "./optionsManager";
 import { CustomMath, Random } from "../CustomMath";
-import { HealthToColor } from "../util";
+import { HealthToColor, NumberToString } from "../util";
 
 export class CanvasManager {
 	islands: string[] = [];
@@ -211,7 +211,7 @@ export class CanvasManager {
 		const coords = this.getPosForCoordForBlock(x + this.wOffset, y, true);
 		this.ctx.fillStyle = HealthToColor(num, 1);
 		this.ctx.fillRect(coords[0] + offset, coords[1] + offset, step - offset, step - offset);
-		if (stats.armorRating && worldStats.armorPerc) {
+		if (stats.armorRating < 0 && worldStats.armorPerc < 0) {
 			this.ctx.fillStyle = "rgb(0,255,255)"; // TODO, DO CUSTOM ARMOR COLORS??????????/
 			this.ctx.beginPath();
 			this.ctx.moveTo(coords[0] + offset, coords[1] + offset);
@@ -220,7 +220,7 @@ export class CanvasManager {
 			this.ctx.fill();
 			this.ctx.closePath();
 		}
-		if (stats.shieldRegen && worldStats.shieldPerc) {
+		if (stats.shieldRegen < 0 && worldStats.shieldPerc < 0) {
 			this.ctx.fillStyle = "rgb(0,0,0	)"; // TODO, DO CUSTOM SHIELD COLORS??????????/
 			this.ctx.beginPath();
 
@@ -239,7 +239,7 @@ export class CanvasManager {
 			this.ctx.fill("evenodd");
 			this.ctx.closePath();
 		}
-		if (stats.mutation != "" && worldStats.mutationPerc) {
+		if (stats.mutation != "" && worldStats.mutationPerc < 0) {
 			this.ctx.fillStyle = "rgb(0,0,0	)"; // TODO, DO CUSTOM SHIELD COLORS??????????/
 			const gradient = this.ctx.createRadialGradient(coords[0] + step / 2, coords[1] + step / 2, step / 16, coords[0] + step / 2, coords[1] + step / 2, step / 2);
 
@@ -287,8 +287,9 @@ export class CanvasManager {
 		const stats: BlockStats = this.getBlockStats(x, y);
 		for (let stat in stats) {
 			if (typeof stats[stat] == "number") {
-				stats[stat] = Math.round((Number.parseFloat(stats[stat]) + Number.EPSILON) * 10000) / 10000;
-				if (stats[stat] > 1e10) stats[stat] = stats[stat].toExponential(5);
+				stats[stat] = NumberToString(stats[stat], 1);
+				//stats[stat] = Math.round((Number.parseFloat(stats[stat]) + Number.EPSILON) * 10000) / 10000;
+				//if (stats[stat] > 1e10) stats[stat] = stats[stat].toExponential(5);
 			}
 			$(`#bstat${stat.charAt(0).toUpperCase() + stat.slice(1)}Detail`).text(stats[stat]);
 		}
@@ -620,8 +621,9 @@ export class CanvasManager {
 		if (!WorldGenerator.DoesWorldExist(this.x, this.y)) return;
 		for (let stat in stats) {
 			if (typeof stats[stat] == "number") {
-				stats[stat] = Math.round((Number.parseFloat(stats[stat]) + Number.EPSILON) * 10000) / 10000;
-				if (stats[stat] > 1e10) stats[stat] = stats[stat].toExponential(5);
+				stats[stat] = NumberToString(stats[stat], 1);
+				//stats[stat] = Math.round((Number.parseFloat(stats[stat]) + Number.EPSILON) * 10000) / 10000;
+				//if (stats[stat] > 1e10) stats[stat] = stats[stat].toExponential(5);
 			}
 			$(`#stat${stat.charAt(0).toUpperCase() + stat.slice(1)}Detail`).text(stats[stat]);
 		}

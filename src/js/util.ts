@@ -47,3 +47,72 @@ function addVectors(a: Vector3, b: Vector3) {
 function multVectorByInt(a: Vector3, b: number) {
 	return new Vector3(a.x * b, a.y * b, a.z * b);
 }
+export function NumberToString(x: number, formatting: number) {
+	if (x >= 9.223372036854776e18) {
+		return "MAX";
+	}
+	if (formatting == 0) {
+		if (x < 10000.0) {
+			return Math.floor(x).toString();
+		}
+		if (x < 10000000.0) {
+			return Math.floor(x / 1000.0).toString() + "K";
+		}
+		if (x < 10000000000.0) {
+			return Math.floor(x / 1000000.0).toString() + "M";
+		}
+		if (x < 10000000000000.0) {
+			return Math.floor(x / 1000000000.0).toString() + "G";
+		}
+		if (x < 10000000000000000.0) {
+			return Math.floor(x / 1000000000000.0).toString() + "T";
+		}
+		if (x < 1e19) {
+			return Math.floor(x / 1000000000000000.0).toString() + "P";
+		}
+		if (x < 1e22) {
+			return Math.floor(x / 1e18).toString() + "E";
+		}
+		if (x < 1e25) {
+			return Math.floor(x / 1e21).toString() + "Z";
+		}
+		if (x > 0.0) {
+			return Math.floor(x / 1e24).toString() + "Y";
+		}
+		return Math.floor(x).toString();
+	} else if (formatting == 1) {
+		if (x < 10000.0) {
+			return x.toFixed(3);
+		}
+		if (x < 1000000.0) {
+			return (x / 1000.0).toFixed(3) + "K";
+		}
+		if (x < 1000000000.0) {
+			return (x / 1000000.0).toFixed(3) + "M";
+		}
+		if (x < 1000000000000.0) {
+			return (x / 1000000000.0).toFixed(3) + "G";
+		}
+		if (x < 1000000000000000.0) {
+			return (x / 1000000000000.0).toFixed(3) + "T";
+		}
+		if (x < 1e18) {
+			return (x / 1000000000000000.0).toFixed(3) + "P";
+		}
+		if (x < 1e21) {
+			return (x / 1e18).toFixed(3) + "E";
+		}
+		if (x < 1e24) {
+			return (x / 1e21).toFixed(3) + "Z";
+		}
+		if (x > 0.0) {
+			return (x / 1e24).toFixed(3) + "Y";
+		}
+		return x.toString();
+	} else {
+		if (formatting == 2) {
+			return x.toExponential(3);
+		}
+		return "style not found";
+	}
+}
