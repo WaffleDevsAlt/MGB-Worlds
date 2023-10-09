@@ -48,7 +48,7 @@ function multVectorByInt(a: Vector3, b: number) {
 	return new Vector3(a.x * b, a.y * b, a.z * b);
 }
 export function NumberToString(x: number, formatting: number) {
-	if (x >= 9.223372036854776e18) {
+	if (x == 9.223372036854776e18) {
 		return "MAX";
 	}
 	if (formatting == 0) {

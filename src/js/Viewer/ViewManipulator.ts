@@ -1,7 +1,6 @@
 import { CanvasMgr, ViewMgr, WorldGenerator } from "../../..";
 import { CustomMath } from "../CustomMath";
 import { WorldStats } from "../WorldGeneration";
-import { optionStates } from "./optionsManager";
 type filter = {
 	text: string;
 	id: string;
@@ -159,7 +158,7 @@ export class ViewManager {
 			    <span class="hasHelp my-auto text-[.8vw] font-bold mr-auto m-2 min-w-max">${text}</span>
                 <div class="hide">${helpText}</div>
 
-				${inputType == "text" ? `<input id="${id}Input" type="text" class="w-4/12 min-w-[40px] h-full float-right" maxlength="10"/>` : ``}
+				${inputType == "text" ? `<input id="${id}Input" type="text" class="w-4/12 min-w-[40px] h-full float-right" maxlength="20"/>` : ``}
 				${
 					hasButton
 						? `<button id="${id}Submit" type="submit" class="right-0 float-right text-[.6vw] z-0 w-8 h-full bg-slate-600 text-white">S</button>`

@@ -1,4 +1,4 @@
-import { CanvasMgr } from "../../..";
+import { CanvasMgr, debugMode } from "../../..";
 
 const options: {
 	[key: string]: any;
@@ -24,12 +24,24 @@ const options: {
 		helpText: "No Tier Numbers",
 	},
 };
-
 export const optionStates: {
 	[key: string]: any;
 } = {};
 
 export function initializeOptions() {
+	if (debugMode) {
+		console.log("DEBUG FUCoo");
+		options.hideAllWorlds = {
+			text: "Hide All Worlds",
+			btnId: "hideAllWorlds",
+			helpText: "No Worlds",
+		};
+		options.hideAllConns = {
+			text: "Hide All Conns",
+			btnId: "hideAllConns",
+			helpText: "No Conns",
+		};
+	}
 	let maxSize = 0;
 	for (const option in options) {
 		const { text, btnId, helpText } = options[option];

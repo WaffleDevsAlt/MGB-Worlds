@@ -1,4 +1,4 @@
-import { ViewMgr, WorldGenerator } from "../../..";
+import { ViewMgr, WorldGenerator, debugMode } from "../../..";
 import { BlockStats, WorldStats } from "../WorldGeneration";
 import { initializeOptions, optionStates } from "./optionsManager";
 import { CustomMath, Random } from "../CustomMath";
@@ -132,6 +132,9 @@ export class CanvasManager {
 		const filteredConnections = ViewMgr.shouldFilterConnections();
 		this.generateConnections(filteredConnections);
 		ViewMgr.shownWorlds = [];
+		if (debugMode) {
+			if (optionStates.hideAllWorlds) return;
+		}
 		for (let x = this.x - this.xView; x <= this.x + this.xView; x++) {
 			for (let y = this.y - this.yView; y <= this.y + this.yView; y++) {
 				if (this.worldsCache[x] && this.worldsCache[x][y] && this.worldsCache[x][y].stats) {
@@ -438,7 +441,7 @@ export class CanvasManager {
 				this.ctx.strokeStyle = "rgb(10, 160, 120,.5)";
 				break;
 		}
-		const shouldShowCircle = maxTier % 100 < minTier % 100;
+		const shouldShowCircle = Math.floor(maxTier / 100) > Math.floor(minTier / 100);
 		if (shouldShowCircle) {
 			const pos = this.getPosForCoord(0, 0, false);
 			const step = this.width / (this.xView * 2 + 1);
@@ -516,6 +519,9 @@ export class CanvasManager {
 	}
 
 	generateConnections(filtered: boolean) {
+		if (debugMode) {
+			if (optionStates.hideAllConns) return;
+		}
 		for (let x = this.x - this.xView - 2; x <= this.x + this.xView; x++) {
 			for (let y = this.y - this.yView - 2; y <= this.y + this.yView; y++) {
 				if (!WorldGenerator.DoesWorldExist(x, y)) continue;
