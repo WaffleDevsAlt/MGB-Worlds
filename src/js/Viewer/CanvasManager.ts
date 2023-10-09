@@ -597,6 +597,11 @@ export class CanvasManager {
 		"MutationLevel",
 	];
 	initializeStats() {
+		$(`#stats`).append(`
+	<div class="statDiv mb-8" id="posDiv">
+						<p id="posXLabel" class="text-left"></p>
+						<p id="posYLabel" class="text-left"></p>
+					</div>`);
 		for (let i = 0; i < this.stats.length; i++) {
 			$(`#stats`).append(`
 			<div class="statDiv" id="stat${this.stats[i]}Div text-[.8vw]">
@@ -605,11 +610,7 @@ export class CanvasManager {
 			</div>
 			`);
 		}
-		$(`#stats`).append(`
-		<div class="statDiv mt-8" id="posDiv">
-							<p id="posXLabel" class="text-left"></p>
-							<p id="posYLabel" class="text-left"></p>
-						</div>`);
+
 		this.areStatsInitialized = true;
 	}
 	updateStats() {
