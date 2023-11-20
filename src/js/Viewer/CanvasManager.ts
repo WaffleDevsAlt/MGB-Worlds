@@ -211,10 +211,12 @@ export class CanvasManager {
 		const offset = step / 24;
 		const indent = offset + step / 12;
 
+		console.log(stats);
 		const coords = this.getPosForCoordForBlock(x + this.wOffset, y, true);
 		this.ctx.fillStyle = HealthToColor(num, 1);
 		this.ctx.fillRect(coords[0] + offset, coords[1] + offset, step - offset, step - offset);
-		if (stats.armorRating < 0 && worldStats.armorPerc < 0) {
+		if (stats.armorRating > 0 && worldStats.armorPerc > 0) {
+			console.log("aaaaaa");
 			this.ctx.fillStyle = "rgb(0,255,255)"; // TODO, DO CUSTOM ARMOR COLORS??????????/
 			this.ctx.beginPath();
 			this.ctx.moveTo(coords[0] + offset, coords[1] + offset);
@@ -223,7 +225,8 @@ export class CanvasManager {
 			this.ctx.fill();
 			this.ctx.closePath();
 		}
-		if (stats.shieldRegen < 0 && worldStats.shieldPerc < 0) {
+		if (stats.shieldRegen > 0 && worldStats.shieldPerc > 0) {
+			console.log("bbbbbbb");
 			this.ctx.fillStyle = "rgb(0,0,0	)"; // TODO, DO CUSTOM SHIELD COLORS??????????/
 			this.ctx.beginPath();
 
@@ -242,11 +245,12 @@ export class CanvasManager {
 			this.ctx.fill("evenodd");
 			this.ctx.closePath();
 		}
-		if (stats.mutation != "" && worldStats.mutationPerc < 0) {
+		if (stats.mutation != "" && worldStats.mutationPerc > 0) {
+			console.log("ccccccccc");
 			this.ctx.fillStyle = "rgb(0,0,0	)"; // TODO, DO CUSTOM SHIELD COLORS??????????/
 			const gradient = this.ctx.createRadialGradient(coords[0] + step / 2, coords[1] + step / 2, step / 16, coords[0] + step / 2, coords[1] + step / 2, step / 2);
 
-			// Add three color stops
+			// Add two color stops
 			gradient.addColorStop(0, "black");
 			gradient.addColorStop(1, "rgba(0,0,0,0");
 
