@@ -56,7 +56,7 @@ export function initializeOptions() {
                 <input
                     id="${btnId}Input"
                     type="checkbox"
-                    class="appearance-none transition-colors cursor-pointer w-14 h-7 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-blue-500 bg-red-500"
+                    class="appearance-none transition-colors cursor-pointer w-14 h-7 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-blue-500 bg-red-800"
                 />
                 <span class="absolute font-medium text-xs uppercase right-1 text-white pointer-events-none"> OFF </span>
                 <span class="absolute font-medium text-xs uppercase right-8 text-white pointer-events-none"> ON </span>

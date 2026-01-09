@@ -511,9 +511,9 @@ export class CanvasManager {
 		y: number,
 		hasYs: boolean,
 		alpha: number = 1,
-		squareStyle: string = `rgba(200,0,0,${alpha})`,
-		ysStyle: string = `rgba(255, 255, 0, ${alpha})`,
-		squareSize: number = 6,
+		squareStyle: string = `rgba(100,0,0,${alpha})`,
+		ysStyle: string = `rgba(170, 170, 0, ${alpha})`,
+		squareSize: number = 5,
 		ysSize: number = 4
 	) {
 		const coords = this.getPosForCoord(x, y, true);
